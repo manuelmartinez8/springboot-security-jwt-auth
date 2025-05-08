@@ -18,7 +18,12 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
+/*
+ * OncePerRequestFilter realiza una sola ejecución por cada solicitud a nuestra API.
+ *  Proporciona un método doFilterInternal() que implementaremos para analizar y validar JWT,
+ *   cargar los datos del usuario (mediante UserDetailsService)
+ *  y verificar la autorización (mediante UsernamePasswordAuthenticationToken).
+ * */
 public class AuthTokenFilter extends OncePerRequestFilter {
 	
 	  @Autowired

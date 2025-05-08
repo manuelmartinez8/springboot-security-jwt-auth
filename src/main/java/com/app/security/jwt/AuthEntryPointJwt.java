@@ -17,6 +17,10 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+/*
+ * AuthenticationEntryPoint Detectará un error de autenticación.
+
+ * */
 @Component
 public class AuthEntryPointJwt  implements AuthenticationEntryPoint{
 	

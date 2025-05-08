@@ -13,25 +13,25 @@ public class TestController {
 	
 	@GetMapping("/all")
 	  public String allAccess() {
-	    return "Public Content.";
+	    return "Contenido Publico.";
 	  }
 
 	  @GetMapping("/user")
 	  @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
 	  public String userAccess() {
-	    return "User Content.";
+	    return "Contenido de Usuario.";
 	  }
 
 	  @GetMapping("/mod")
 	  @PreAuthorize("hasRole('MODERATOR')")
 	  public String moderatorAccess() {
-	    return "Moderator Board.";
+	    return "Moderador Info.";
 	  }
 
 	  @GetMapping("/admin")
 	  @PreAuthorize("hasRole('ADMIN')")
 	  public String adminAccess() {
-	    return "Admin Board.";
+	    return "Admin Info.";
 	  }
 
 }

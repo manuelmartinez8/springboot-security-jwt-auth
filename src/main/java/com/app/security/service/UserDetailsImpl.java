@@ -1,6 +1,7 @@
 package com.app.security.service;
 
 import java.util.Collection;
+
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -12,6 +13,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import com.app.models.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+/*
+ * – UserDetails contiene información necesaria 
+ * (como: nombre de usuario, contraseña, autoridades) para crear un objeto de autenticación.
+ * */
 public class UserDetailsImpl implements UserDetails {
 	
 	 private static final long serialVersionUID = 1L;

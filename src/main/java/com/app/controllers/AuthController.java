@@ -2,12 +2,12 @@ package com.app.controllers;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
+ 
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.RuntimeBeanNameReference;
+ 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -40,7 +40,12 @@ import jakarta.validation.Valid;
 public class AuthController {
 
     private final UserDetailsServiceImpl userDetailsServiceImpl;
-	
+	/*
+	 * AuthenticationManager cuenta con un DaoAuthenticationProvider (con la ayuda de UserDetailsService y PasswordEncoder)
+	 *  para validar el objeto UsernamePasswordAuthenticationToken. 
+	 *  Si se realiza correctamente, AuthenticationManager devuelve un objeto de autenticación completo 
+	 *  (incluidas las autorizaciones otorgadas).
+	 * */
 	  @Autowired
 	  AuthenticationManager authenticationManager;
 	
@@ -59,12 +64,15 @@ public class AuthController {
     AuthController(UserDetailsServiceImpl userDetailsServiceImpl) {
         this.userDetailsServiceImpl = userDetailsServiceImpl;
     }
-
-	  @PostMapping("/signin")
-	  public ResponseEntity<?> authenticationUser(@Valid @RequestBody LoginRequest loginRequest){
+//este es el endpoint que al logearte genera el token
+	  @PostMapping("/login")
+	  public ResponseEntity<?> loginUsuario(@Valid @RequestBody LoginRequest loginRequest){
 		  Authentication authentication = authenticationManager.authenticate(
 			        new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
-		  
+		  /*
+		   * – UsernamePasswordAuthenticationToken obtiene {nombre de usuario, contraseña} de la solicitud de inicio de sesión,
+		   *  AuthenticationManager lo utilizará para autenticar una cuenta de inicio de sesión.
+		   * */
 		  SecurityContextHolder.getContext().setAuthentication(authentication);
 		  String jwt = jwtUtils.generateJwtToken(authentication);
 		  
@@ -79,9 +87,9 @@ public class AuthController {
 				  userDetails.getUsername(),
 				  userDetails.getEmail(), roles));		  
 	  }
-	  
-	  @PostMapping("/signup")
-	  public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest  signupRequest){
+	  //este es el endpoint que registra el usuario
+	  @PostMapping("/registrar")
+	  public ResponseEntity<?> registrarUsuario(@Valid @RequestBody SignupRequest  signupRequest){
 		  if(userRepository.existsByUsername(signupRequest.getUsername())) {
 			  return ResponseEntity
 					  .badRequest()
@@ -105,26 +113,26 @@ public class AuthController {
 		  
 		  if(strRole == null) {
 			  Role userRole = roleRepository.findByName(ERole.ROLE_USER)
-					  .orElseThrow(()-> new RuntimeException("Error: Role is not found."));
+					  .orElseThrow(()-> new RuntimeException("Error: Role no encontrado."));
 			  roles.add(userRole);
 		  }else {
 			  strRole.forEach(role ->{
 				  switch (role) {
 				case "admin": 
 					Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
-					.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+					.orElseThrow(() -> new RuntimeException("Error: Role no encontrado."));
 					roles.add(adminRole);
 					break;
 					
 				case "mod": 
 					Role modRole = roleRepository.findByName(ERole.ROLE_MODERATOR)
-					.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+					.orElseThrow(() -> new RuntimeException("Error: Role no encontrado."));
 					roles.add(modRole);
 					break;
 					
 				default:
 			          Role userRole = roleRepository.findByName(ERole.ROLE_USER)
-		              .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+		              .orElseThrow(() -> new RuntimeException("Error: Role no encontrado."));
 		          roles.add(userRole);
 				}
 			  });

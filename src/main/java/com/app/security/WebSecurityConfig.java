@@ -21,10 +21,14 @@ import com.app.security.service.UserDetailsServiceImpl;
 
  
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
+/*
+ * WebSecurityConfig es la base de nuestra implementación de seguridad. Configura cors, csrf, 
+ * la gestión de sesiones y las reglas para recursos protegidos.
+ * 
+ * */
 
 @Configuration
-@EnableMethodSecurity
+@EnableMethodSecurity //permite que Spring encuentre y aplique automáticamente la clase a la seguridad web global
 public class WebSecurityConfig{
 	
 	  @Autowired

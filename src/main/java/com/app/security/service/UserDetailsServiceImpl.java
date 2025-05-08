@@ -10,6 +10,10 @@ import org.springframework.transaction.annotation.Transactional;
 import com.app.models.User;
 import com.app.repository.UserRepository;
 
+/*
+ * – La interfaz UserDetailsService tiene un método para cargar el usuario por nombre de usuario y
+ * devuelve un objeto UserDetails que Spring Security puede usar para autenticación y validación.
+ * */
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService{
 	
@@ -20,7 +24,7 @@ public class UserDetailsServiceImpl implements UserDetailsService{
 	  @Transactional
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		 User user = userRepository.findByUsername(username)
-			        .orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + username));
+			        .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado con username: " + username));
 
 			    return UserDetailsImpl.build(user);
 	}
